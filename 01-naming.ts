@@ -1,34 +1,34 @@
 // TODO: Refactor this code to follow clean naming conventions
 
-class Prod {
+class Product {
   constructor(
-    public n: string,
-    public p: number,
-    public q: number,
-    public d: boolean
+    public name: string,
+    public price: number,
+    public quantity: number,
+    public inStock: boolean
   ) {}
 }
 
-class Usr {
+class User {
   constructor(
     public id: number,
-    public nm: string,
-    public e: string,
+    public name: string,
+    public email: string,
     public blocked: boolean,
-    public bal: number
+    public balance: number
   ) {}
 }
 
-class Ord {
+class Order {
   constructor(
-    public no: number,
-    public u: Usr,
+    public number: number,
+    public user: Usr,
     public items: Prod[],
-    public st: string
+    public status: string
   ) {}
 }
 
-class Mgr {
+class Manager {
   private data: Ord[] = [];
   private flag = true;
 
@@ -50,13 +50,13 @@ class Mgr {
     if (o.u.blocked) {
       return false;
     }
-    if (!this.invalid(o)) {
+    if (!this.isInStock(o)) {
       return true;
     }
     return false;
   }
 
-  invalid(obj: Ord): boolean {
+  isInStock(obj: Ord): boolean {
     if (obj.st != "ready") {
       return true;
     }
@@ -74,7 +74,7 @@ class Mgr {
     for (let i = 0; i < o.items.length; i++) {
       const itm = o.items[i];
       let p = itm.p * itm.q;
-      if (itm.d) {
+      if (itm.inStock) {
         p = p * 0.9;
       }
       amt += p;
@@ -84,19 +84,19 @@ class Mgr {
 
   proc(o: Ord, v: number): void {
     o.u.bal = o.u.bal - v;
-    o.st = "done";
+    o. = "done";
     this.data.push(o);
     if (this.flag) {
       this.util(o.u.e, o.no);
     }
   }
 
-  util(addr: string, n: number): void {
+  util(addr: ring, n: number): void {
     console.log("Email to " + addr + ": #" + n);
   }
 
   run1(id: number): boolean {
-    const x = this.data.find((d) => d.no == id);
+    con x = this.data.find((inStock) => inStock.no == id);
     if (x) {
       return this.do(x);
     }
@@ -105,19 +105,19 @@ class Mgr {
 }
 
 function main01() {
-  const mgr = new Mgr();
-  const u1 = new Usr(1, "John", "j@test.com", false, 1000);
-  const p1 = new Prod("Laptop", 999, 1, true);
-  const p2 = new Prod("Mouse", 25, 2, false);
-  const ord1 = new Ord(1001, u1, [p1, p2], "ready");
+  const Manager = new Mgr();
+  const User1 = new Usr(1, "John", "j@test.com", false, 1000);
+  const Product1 = new Product("Laptop", 999, 1, true);
+  const Product2 = new Product("Mouse", 25, 2, false);
+  const Order1 = new Ord(1001, User1, [Product1, Product2], "ready");
 
   const res = mgr.do(ord1);
   console.log(res ? "OK" : "FAIL");
-  console.log("Balance: " + u1.bal);
+  console.log("Balance: " + User1.bal);
 
   mgr.run1(1001);
-  console.log("Product: " + p1.n);
-  console.log("User ID: " + u1.id);
+  console.log("Product: " + Product1.n);
+  console.log("User ID: " + User1.id);
 }
 
 main01();
