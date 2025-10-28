@@ -15,6 +15,34 @@ class Order {
 class RestaurantSystem {
   private orders: Order[] = [];
 
+  checkUser(): booelan{
+    if (name == "" || phone == "") {
+      console.log("Customer missing");
+      return false;
+    }
+      if (phone.length < 10) {
+        console.log("Bad phone");
+        return false;
+      }
+
+    if (items.length == 0) {
+          console.log("No items");
+          return false;
+        } 
+      return true;
+  }
+
+  CalcSubtotal(): float{
+    let subtotal = 0;
+          for (let i = 0; i < items.length; i++) {
+            if (quantities[i] <= 0) {
+              console.log("Bad qty");
+              return false;
+            }
+            subtotal += prices[i] * quantities[i];
+          }
+  }
+
   processOrder(
     name: string,
     phone: string,
@@ -24,26 +52,12 @@ class RestaurantSystem {
     address: string,
     cardNumber: string
   ): boolean {
-    if (name == "" || phone == "") {
-      console.log("Customer missing");
-      return false;
-    } else {
-      if (phone.length < 10) {
-        console.log("Bad phone");
-        return false;
-      } else {
-        if (items.length == 0) {
-          console.log("No items");
-          return false;
-        } else {
-          let subtotal = 0;
-          for (let i = 0; i < items.length; i++) {
-            if (quantities[i] <= 0) {
-              console.log("Bad qty");
-              return false;
-            }
-            subtotal += prices[i] * quantities[i];
-          }
+     if (!checkInfo()){
+       return false;
+     }
+    
+     let subtotal = CalcSubtotal();
+          
 
           let delivery = subtotal > 50 ? 0 : 5;
           const tax = subtotal * 0.1;
@@ -85,9 +99,9 @@ class RestaurantSystem {
             }
           }
         }
-      }
-    }
-  }
+      
+    
+  
 
   cancelOrder(orderId: number): void {
     for (let i = 0; i < this.orders.length; i++) {
